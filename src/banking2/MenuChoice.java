@@ -1,11 +1,11 @@
-package banking1;
+package banking2;
 
 import java.util.Scanner;
 
+public class MenuChoice {
 
-public class BankingSystemMain {
-	
-	public static void showMenu() {
+	public void showMenu() {
+
 		System.out.println("### Menu ###");
 		System.out.print("1.계좌개설   ");
 		System.out.println("2.입  금");
@@ -14,29 +14,33 @@ public class BankingSystemMain {
 		System.out.println("5.프로그램종료 ");
 		System.out.print("메뉴선택>>>");
 	}
+	public interface Menu {
+		int MAKE=1, DEPOSIT=2, WITHDRAW=3, INQUIRE=4, EXIT=5;
+	}
 	
-	public static void main(String[] args) {
-		
+	public void menuChoice() {
+
 		Scanner input = new Scanner(System.in);
-		
 		Account account = new Account();
-		while(true) {
-			
+
+		while (true) {
 			showMenu();
 			int choice = input.nextInt();
-			
+
 			switch (choice) {
-			case 1:
+			case Menu.MAKE:
 				account.makeAccount();
 				break;
-			case 2:
+			case Menu.DEPOSIT:
+				account.depositMoney();
 				break;
-			case 3:
+			case Menu.WITHDRAW:
+				account.withdrawMoney();
 				break;
-			case 4:
-				account.showAllAccounts();
+			case Menu.INQUIRE:
+				account.showAccInfo();
 				break;
-			case 5:
+			case Menu.EXIT:
 				System.out.println("프로그램종료");
 				return;
 			}
