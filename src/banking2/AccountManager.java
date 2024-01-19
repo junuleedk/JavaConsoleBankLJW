@@ -17,6 +17,7 @@ public class AccountManager {
 		System.out.println("***신규계좌개설***");
 		System.out.println("1.보통계좌");
 		System.out.println("2.신용신뢰계좌");
+		System.out.print("선택: ");
 		
 		int choice = input.nextInt();
 		if(choice == 1) {
@@ -34,9 +35,9 @@ public class AccountManager {
 			int iinterest = input.nextInt();
 			System.out.println("계좌개설이 완료되었습니다.");
 			
-			Account newAcc = new Account(iaccountNum, iuserName, 
-					ibalance, iinterest, null);
-			set.add(newAcc);
+			NormalAccount newAcc1 = new NormalAccount(iaccountNum, iuserName, 
+					ibalance, iinterest);
+			set.add(newAcc1);
 		}
 		else if(choice == 2) {
 			
@@ -54,18 +55,18 @@ public class AccountManager {
 			
 			System.out.print("신용등급(A,B,C등급): ");
 			String igrade = input.nextLine();
-			
+			input.nextLine();
 			System.out.println("계좌개설이 완료되었습니다.");
 			
-			Account newAcc = new Account(iaccountNum, 
+			HighCreditAccount newAcc2 = new HighCreditAccount(iaccountNum, 
 					iuserName, ibalance, iinterest, igrade);
-			set.add(newAcc);
+			set.add(newAcc2);
 		}
 		
 	}
 
 	// 입금
-	public void depositMoney() {
+	public int depositMoney() {
 
 		boolean isFind = false;
 		Scanner input = new Scanner(System.in);
@@ -74,7 +75,7 @@ public class AccountManager {
 		String searchAcc = input.nextLine();
 		System.out.print("입금액: ");
 		int depositM = input.nextInt();
-
+		
 		Iterator<Account> itr = set.iterator();
 
 		while (itr.hasNext()) {
@@ -87,7 +88,9 @@ public class AccountManager {
 				System.out.println("입금이 완료되었습니다.");
 			}
 		}
+		return depositM;
 	}
+	
 
 	// 출금
 	public void withdrawMoney() {
@@ -121,5 +124,12 @@ public class AccountManager {
 		}
 		System.out.println("전체계좌정보 출력이 완료되었습니다.");
 	}
-
+	
+	//보통예금계좌 이자계산
+	public int nomalCalcInterest(int bal, int inter, int depos) {
+		int interest = 0;
+		int result = bal + (bal * (inter / 100) + depos);
+		return result;
+		
+	}
 }
