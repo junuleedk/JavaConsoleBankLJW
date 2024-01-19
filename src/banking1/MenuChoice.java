@@ -1,4 +1,4 @@
-package banking2;
+package banking1;
 
 import java.util.Scanner;
 
@@ -19,7 +19,6 @@ public class MenuChoice implements Interface {
 
 		Scanner input = new Scanner(System.in);
 		Account account = new Account();
-		AccountManager accM = new AccountManager();
 		
 		while (true) {
 			showMenu();
@@ -27,16 +26,16 @@ public class MenuChoice implements Interface {
 
 			switch (choice) {
 			case MAKE:
-				accM.makeAccount();
+				account.makeAccount();
 				break;
 			case DEPOSIT:
-				accM.depositMoney();
+				account.depositMoney();
 				break;
 			case WITHDRAW:
-				accM.withdrawMoney();
+				account.withdrawMoney();
 				break;
 			case INQUIRE:
-				accM.showAccInfo();
+				account.showAccInfo();
 				break;
 			case EXIT:
 				System.out.println("프로그램종료");
