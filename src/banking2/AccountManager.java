@@ -35,7 +35,7 @@ public class AccountManager {
 			System.out.println("계좌개설이 완료되었습니다.");
 			
 			Account newAcc = new Account(iaccountNum, iuserName, 
-					ibalance, iinterest);
+					ibalance, iinterest, null);
 			set.add(newAcc);
 		}
 		else if(choice == 2) {
