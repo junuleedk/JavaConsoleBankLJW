@@ -19,6 +19,10 @@ class HighCreditAccount extends Account {
 				"잔고: " + balance + "\n" + "기본이자: " + interest+ "%" + "\n" + "신용등급: " + grade + "\n" + "----------------";
 	}
 	
-	
+	@Override
+	public double calc() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

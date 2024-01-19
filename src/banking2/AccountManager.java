@@ -20,11 +20,12 @@ public class AccountManager {
 		System.out.print("선택: ");
 		
 		int choice = input.nextInt();
+		input.nextLine();
 		if(choice == 1) {
 			
 			System.out.print("계좌번호: ");
 			String iaccountNum = input.nextLine();
-			input.nextLine();
+			
 			System.out.print("고객이름: ");
 			String iuserName = input.nextLine();
 			
@@ -33,6 +34,7 @@ public class AccountManager {
 			
 			System.out.print("기본이자%(정수형태로입력):");
 			int iinterest = input.nextInt();
+			
 			System.out.println("계좌개설이 완료되었습니다.");
 			
 			NormalAccount newAcc1 = new NormalAccount(iaccountNum, iuserName, 
@@ -43,7 +45,7 @@ public class AccountManager {
 			
 			System.out.print("계좌번호: ");
 			String iaccountNum = input.nextLine();
-			input.nextLine();
+			
 			System.out.print("고객이름: ");
 			String iuserName = input.nextLine();
 			
@@ -52,10 +54,11 @@ public class AccountManager {
 			
 			System.out.print("기본이자%(정수형태로입력): ");
 			int iinterest = input.nextInt();
+			input.nextLine();//버퍼 공부하기
 			
 			System.out.print("신용등급(A,B,C등급): ");
 			String igrade = input.nextLine();
-			input.nextLine();
+			
 			System.out.println("계좌개설이 완료되었습니다.");
 			
 			HighCreditAccount newAcc2 = new HighCreditAccount(iaccountNum, 
@@ -66,7 +69,7 @@ public class AccountManager {
 	}
 
 	// 입금
-	public int depositMoney() {
+	public void depositMoney() {
 
 		boolean isFind = false;
 		Scanner input = new Scanner(System.in);
@@ -77,18 +80,21 @@ public class AccountManager {
 		int depositM = input.nextInt();
 		
 		Iterator<Account> itr = set.iterator();
-
+		
 		while (itr.hasNext()) {
 			Account saveAccount = itr.next();
 			if (searchAcc.equals(saveAccount.accountNum)) {
-				saveAccount.balance += depositM;
+				
+				double result = saveAccount.calc();
+				saveAccount.setBalance(saveAccount.getBalance() + depositM + (int)result)  ;
 				System.out.println("입금이 완료되었습니다.");
 				set.add(saveAccount);
 			} else {
 				System.out.println("입금이 완료되었습니다.");
 			}
 		}
-		return depositM;
+		
+		
 	}
 	
 
@@ -125,11 +131,4 @@ public class AccountManager {
 		System.out.println("전체계좌정보 출력이 완료되었습니다.");
 	}
 	
-	//보통예금계좌 이자계산
-	public int nomalCalcInterest(int bal, int inter, int depos) {
-		int interest = 0;
-		int result = bal + (bal * (inter / 100) + depos);
-		return result;
-		
-	}
 }

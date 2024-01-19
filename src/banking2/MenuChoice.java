@@ -18,7 +18,7 @@ public class MenuChoice implements Interface {
 	public void menuChoice() {
 
 		Scanner input = new Scanner(System.in);
-		Account account = new Account();
+//		Account account = new Account();
 		AccountManager accM = new AccountManager();
 		
 		while (true) {
