@@ -1,4 +1,4 @@
-package banking5;
+package banking4;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class MenuChoice implements IcustomDefine {
 
 	public void showMenu() {
-		
+
 		System.out.println("### Menu ###");
 		System.out.print("1.계좌개설      ");
 		System.out.println("2.입  금");
@@ -21,8 +21,6 @@ public class MenuChoice implements IcustomDefine {
 
 		Scanner input = new Scanner(System.in);
 		AccountManager accM = new AccountManager();
-		
-		accM.readAccountInfo();
 		
 		while (true) {
 			try {
@@ -46,9 +44,7 @@ public class MenuChoice implements IcustomDefine {
 				accM.deleteAccountInfo();
 				break;
 			case EXIT:
-				accM.saveFileExit();
 				System.out.println("프로그램종료");
-				
 				return;
 			default:
 			}

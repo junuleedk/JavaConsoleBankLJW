@@ -1,11 +1,5 @@
-package banking5;
+package banking4;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.Iterator;
@@ -44,7 +38,8 @@ public class AccountManager {
 		}
 		return false;
 	}// 중복계좌 확인 끝
-
+	
+	
 	// 계좌개설
 	public void makeAccount() {
 
@@ -75,11 +70,10 @@ public class AccountManager {
 						break;
 					}
 				}
-				input.nextLine();
 			}
 
 		}
-		
+		input.nextLine();
 		System.out.print("고객이름: ");
 		String iuserName = input.nextLine();
 		System.out.print("잔고: ");
@@ -153,7 +147,8 @@ public class AccountManager {
 							break;
 						}
 						// 신용계좌
-						else if (choiceNum == 2 && iAccountDuplicate(((HighCreditAccount) saveAccount).accountNum)) {
+						else if (choiceNum == 2
+								&& iAccountDuplicate(((HighCreditAccount) saveAccount).accountNum)) {
 
 							double baseInterest = ((HighCreditAccount) saveAccount).interest;
 							double result = saveAccount.balance + ((saveAccount.balance * baseInterest) / 100)
@@ -248,71 +243,26 @@ public class AccountManager {
 
 	// 계좌정보삭제
 	public void deleteAccountInfo() {
-
 		System.out.print("삭제 할 계좌번호를 입력하세요: ");
 		Scanner input = new Scanner(System.in);
 		String deleteAcc = input.nextLine();
-
+		
 		Iterator<Account> itr = set.iterator();
-
-		while (itr.hasNext()) {
+		
+		while(itr.hasNext()) {
 			Account saveAccount = itr.next();
-			if (iAccountDuplicate(deleteAcc)) {
+			if(iAccountDuplicate(deleteAcc)) {
 				set.remove(deleteAcc);
 				System.out.println("삭제가 완료되었습니다.");
 				set.add(saveAccount);
-			} else {
+			}
+			else {
 				System.out.println("계좌를 찾지 못했습니다.");
 			}
 			break;
 		}
-
+		
+		
 	}
 
-	// IO 직렬화
-	public void saveAccountInfo() {
-
-		try {
-			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("src/banking5/AccountInfo.obj"));
-
-			for (Account ac : set) {
-				out.writeObject(ac);
-			}
-			out.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void readAccountInfo() {
-		ObjectInputStream in = null;
-
-		try {
-			in = new ObjectInputStream(new FileInputStream("src/banking5/AccountInfo.obj"));
-
-			while (true) {
-				Account ac = (Account) in.readObject();
-				set.add(ac);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			
-		}
-		finally {
-	        try {
-	            if (in != null) {
-	                in.close();
-	            }
-	        } 
-	        catch (IOException e) {
-	            e.printStackTrace();
-	        }
-		}
-	}
-	//직렬화 끝
-	
-	//프로그램 종료시 저장
-	public void saveFileExit() {
-		saveAccountInfo();
-	}
 }
