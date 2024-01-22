@@ -16,7 +16,7 @@ class NormalAccount extends Account {
 		return "계좌번호: " + accountNum + "\n" + "고객이름: " + userName + "\n" + 
 				"잔고: " + balance + "\n"  + "기본이자: " + interest + "%" + "\n" + "----------------";
 	}
-	
+	77
 	 // 이자 계산 메서드 추가
 
 }
