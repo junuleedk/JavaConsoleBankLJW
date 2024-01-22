@@ -1,5 +1,5 @@
-package banking2;
+package banking3;
 
-public interface Interface {
+public interface IcustomDefine {
 	int MAKE=1, DEPOSIT=2, WITHDRAW=3, INQUIRE=4, EXIT=5;
 }

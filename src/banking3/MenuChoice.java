@@ -1,5 +1,6 @@
-package banking2;
+package banking3;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MenuChoice implements IcustomDefine {
@@ -21,9 +22,10 @@ public class MenuChoice implements IcustomDefine {
 		AccountManager accM = new AccountManager();
 		
 		while (true) {
+			try {
 			showMenu();
 			int choice = input.nextInt();
-
+		
 			switch (choice) {
 			case MAKE:
 				accM.makeAccount();
@@ -40,6 +42,12 @@ public class MenuChoice implements IcustomDefine {
 			case EXIT:
 				System.out.println("프로그램종료");
 				return;
+			default:
+			}
+			}
+			catch (InputMismatchException e) {
+				System.out.println("숫자를 입력해야합니다.");
+				input.nextLine();
 			}
 		}
 	}

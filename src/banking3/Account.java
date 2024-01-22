@@ -1,11 +1,11 @@
-package banking2;
+package banking3;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
 
-public class Account {
+abstract public class Account {
 
 	String accountNum;
 	String userName;
