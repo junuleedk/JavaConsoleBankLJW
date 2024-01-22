@@ -60,3 +60,4 @@ public class MenuChoice implements IcustomDefine {
 		}
 	}
 }
+77
