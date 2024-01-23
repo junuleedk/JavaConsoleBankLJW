@@ -30,6 +30,7 @@ public class MenuChoice implements IcustomDefine {
 				showMenu();
 				int choice = input.nextInt();
 		
+				
 				switch (choice) {
 					case MAKE:
 						accM.makeAccount();
@@ -50,10 +51,9 @@ public class MenuChoice implements IcustomDefine {
 						option.saveOption();
 						break;
 					case EXIT:
-						accM.saveFileExit();
+						accM.readAccountInfo();
 						System.out.println("프로그램종료");
-					return;
-					default:
+						return;
 				}
 			}
 			catch (InputMismatchException e) {

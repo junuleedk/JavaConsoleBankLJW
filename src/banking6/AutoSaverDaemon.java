@@ -13,9 +13,8 @@ public class AutoSaverDaemon extends Thread {
 	boolean autoS = false;
 	public void saveOption() {
 		
-		System.out.println("1번을 누르면 자동진행이 시작됩니다.	");
-		System.out.println("(자동저장 중 종료하고 싶으면 2번을 누르세요.)");
-		System.out.print("선택: ");
+		System.out.println("자동저장 : 1. On  /  2. Off");
+		System.out.println("1번을 누르면 자동진행이 시작됩니다.");
 		int choiceOptionN = input.nextInt();
 		
 		//참고함
@@ -52,8 +51,6 @@ public class AutoSaverDaemon extends Thread {
 			System.out.println("잘못 입력하였습니다.");
 		}
 	}
-	
-	
 	
 	@Override
 	public void run() {

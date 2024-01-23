@@ -1,9 +1,11 @@
 package banking6;
 
+import java.io.BufferedWriter;
 import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -62,29 +64,35 @@ public class AccountManager {
 		System.out.print("계좌번호: ");
 		String iaccountNum = input.nextLine();
 		
-		if (iAccountDuplicate(iaccountNum)) {
-			System.out.print("중복계좌를 발견하였습니다. ( y / n): ");
-			char choiceYesNo = input.next().charAt(0);
-			
-			if (choiceYesNo == 'n' || choiceYesNo == 'N') {
-				System.out.println("기존계좌유지");
-				return;
-			} else if (choiceYesNo == 'y' || choiceYesNo == 'Y') {
-				System.out.println("덮어씀");
+		
+		
+		//계좌번호에서 중복체크하기
+//		if (iAccountDuplicate(iaccountNum)) {
+//			System.out.print("중복계좌를 발견하였습니다. ( y / n): ");
+//			char choiceYesNo = input.next().charAt(0);
+//			
+//			if (choiceYesNo == 'n' || choiceYesNo == 'N') {
+//				System.out.println("기존계좌유지");
+//				return;
+//			} else if (choiceYesNo == 'y' || choiceYesNo == 'Y') {
+//				System.out.println("덮어씀");
 //				set.remove(iaccountNum);
 //				set.add(iaccountNum);
-				
-				for (Account saveAccount : set) {
-					if (saveAccount.accountNum.equals(iaccountNum)) {
-						set.remove(saveAccount);
-						break;
-					}
-				}
-				input.nextLine();
-			}
-			input.nextLine();
-		}
+//				
+//				for (Account saveAccount : set) {
+//					if (saveAccount.accountNum.equals(iaccountNum)) {
+//						set.remove(saveAccount);
+//						break;
+//					}
+//				}
+//				input.nextLine();
+//			}
+//			input.nextLine();
+//		}
 
+		
+		
+		
 		System.out.print("고객이름: ");
 		String iuserName = input.nextLine();
 		System.out.print("잔고: ");
@@ -92,11 +100,30 @@ public class AccountManager {
 		input.nextLine();
 		System.out.print("기본이자%(정수형태로입력):");
 		double iinterest = input.nextDouble();
+		
 		if (choice == 1) {
-			System.out.println("계좌개설이 완료되었습니다.");
 			NormalAccount newAcc1 = new NormalAccount(iaccountNum, iuserName, ibalance, iinterest);
+			
+			if(set.contains(newAcc1)) {
+//				input.nextLine();
+				System.out.print("중복계좌를 발견하였습니다. 덮어쓸까요? ( y / n): ");
+				char choiceYesNo = input.next().charAt(0);
+				if(choiceYesNo == 'y' || choiceYesNo == 'Y') {
+					for(Account ac : set) {
+						if(newAcc1.accountNum.equals(iaccountNum)) {
+							set.remove(newAcc1);
+						}
+					}
+					set.add(newAcc1);
+				}
+				else {
+					set.add(newAcc1);
+				}
+			}
 			set.add(newAcc1);
-		} else if (choice == 2) {
+			
+		} 
+		else if (choice == 2) {
 			input.nextLine();
 			System.out.print("신용등급(A,B,C등급): ");
 			String igrade = input.nextLine();
@@ -281,6 +308,7 @@ public class AccountManager {
 			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("src/banking6/AccountInfo.obj"));
 
 			for (Account ac : set) {
+				
 				out.writeObject(ac);
 			}
 			out.close();
@@ -291,14 +319,13 @@ public class AccountManager {
 
 	public void readAccountInfo() {
 	    ObjectInputStream in = null;
-
 	    try {
 	        in = new ObjectInputStream(new FileInputStream("src/banking6/AccountInfo.obj"));
-
 	        while (true) {
 	            try {
 	                Account ac = (Account) in.readObject();
 	                set.add(ac);
+	                
 	            } catch (EOFException e) {
 	                // 파일의 끝에 도달함
 	                break;
@@ -310,6 +337,7 @@ public class AccountManager {
 	        try {
 	            if (in != null) {
 	                in.close();
+	                
 	            }
 	        } catch (IOException e) {
 	            e.printStackTrace();
@@ -322,4 +350,38 @@ public class AccountManager {
 	public void saveFileExit() {
 		saveAccountInfo();
 	}
+	
+	//file생성
+
+	public void accountWriter() {
+		AccountManager aM = new AccountManager();
+			try {
+				
+				BufferedWriter out = new BufferedWriter
+						(new FileWriter("src/banking6/AutoSaveAccount.txt"));
+				
+				for(Account ac : aM.set) {
+					out.write(ac.toString() + ac.accountNum);
+					out.newLine();
+				}
+		
+				
+				out.close();
+			}
+			catch(FileNotFoundException e) {
+				System.out.println("파일이 존재하지 않습니다.");
+			}
+			catch (IOException e) {
+				System.out.println("오류가 발생하였습니다.");
+			}
+		}
+
+	
+	
+	
+	
+	
+	
+	
+	
 }

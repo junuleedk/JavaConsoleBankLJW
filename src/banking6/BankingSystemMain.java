@@ -26,7 +26,7 @@ public class BankingSystemMain {
 		break;
 	}
 	
-	AccountWriter accWriter = new AccountWriter();
+	AccountManager accWriter = new AccountManager();
 	accWriter.accountWriter();
 
 	
