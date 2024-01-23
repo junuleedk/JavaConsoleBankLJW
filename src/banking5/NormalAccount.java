@@ -1,4 +1,4 @@
-package banking2;
+package banking5;
 
 import java.util.Iterator;
 
@@ -12,7 +12,7 @@ class NormalAccount extends Account {
 	}
 	
 	@Override
-	public String toString() {
+	 public String toString() {
 		return "계좌번호: " + accountNum + "\n" + "고객이름: " + userName + "\n" + 
 				"잔고: " + balance + "\n"  + "기본이자: " + interest + "%" + "\n" + "----------------";
 	}
