@@ -404,6 +404,9 @@ public class AccountManager {
 		}
 		catch (Exception e) {
 			System.out.println("오류>??");
+			as = new AutoSaver(set);
+			as.setDaemon(true);
+			as.start();
 		}
 	}
 }

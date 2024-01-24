@@ -27,11 +27,12 @@ public class AutoSaver extends Thread {
 			while(true) {
 				
 				PrintWriter out = new PrintWriter(new FileWriter("src/banking6/AccountInfo.txt"));
+				out.println("adsf");
 				Iterator<Account> itr = set.iterator();
 			
 				while (itr.hasNext()) {
-					
 					Account writeSave = itr.next();
+					
 					
 					if(writeSave instanceof NormalAccount) {
 						out.print("[보통계좌] = ");
@@ -47,7 +48,7 @@ public class AutoSaver extends Thread {
 									writeSave.balance);
 				}
 				sleep(5000);
-				System.out.println("5초마다 자동저장중입니다. ");
+				System.out.println("5초마다 자동저장중입니다.");
 				out.close();
 			}	
 		}
