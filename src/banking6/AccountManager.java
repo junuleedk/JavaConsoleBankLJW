@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.Iterator;
@@ -59,32 +60,37 @@ public class AccountManager {
 		input.nextLine();
 		System.out.print("기본이자%(정수형태로입력):");
 		double iinterest = input.nextDouble();
-		System.out.println("계좌개설이 완료되었습니다.");
+		
+		NormalAccount newAcc1 = new NormalAccount(iaccountNum, iuserName, ibalance, iinterest);
+		
 		if (choice == 1) {
-			NormalAccount newAcc1 = new NormalAccount(iaccountNum, iuserName, ibalance, iinterest);
 
-			if (set.contains(newAcc1)) {
-//				input.nextLine();
+			if (set.contains(newAcc1)) { 
+				
 				System.out.print("중복계좌를 발견하였습니다. 덮어쓸까요? ( y / n): ");
 				char choiceYesNo = input.next().charAt(0);
+				
 				if (choiceYesNo == 'y' || choiceYesNo == 'Y') {
-					for (Account ac : set) {
-						if (newAcc1.accountNum.equals(iaccountNum)) {
-							set.remove(newAcc1);
-						}
-					}
+					
+					set.remove(newAcc1);
+					set.add(newAcc1);
 					System.out.println("성공적으로 계좌가 덮어쓰어졌습니다.");
-					set.add(newAcc1);
-				} else {
-					set.add(newAcc1);
 				}
 			}
-			set.add(newAcc1);
-
-		} else if (choice == 2) {
+			else {
+				set.add(newAcc1);
+			}
+			
+		} 
+		else if (choice == 2) {
+			
 			input.nextLine();
 			System.out.print("신용등급(A,B,C등급): ");
 			String igrade = input.nextLine();
+			
+			HighCreditAccount newAcc2 = new HighCreditAccount
+					(iaccountNum, iuserName, ibalance, iinterest, igrade);
+			set.add(newAcc2);
 
 			if (igrade.equals("A") || igrade.equals("a")) {
 				addInterest = 7;
@@ -95,11 +101,24 @@ public class AccountManager {
 			} else {
 				addInterest = 0;
 			}
-
+			
 			System.out.println("계좌개설이 완료되었습니다.");
-
-			HighCreditAccount newAcc2 = new HighCreditAccount(iaccountNum, iuserName, ibalance, iinterest, igrade);
-			set.add(newAcc2);
+			
+			if (set.contains(newAcc2)) { 
+				
+				System.out.print("중복계좌를 발견하였습니다. 덮어쓸까요? ( y / n): ");
+				char choiceYesNo = input.next().charAt(0);
+				
+				if (choiceYesNo == 'y' || choiceYesNo == 'Y') {
+					
+					set.remove(newAcc2);
+					set.add(newAcc2);
+					System.out.println("성공적으로 계좌가 덮어쓰어졌습니다.");
+				}
+			}
+			else {
+				set.add(newAcc2);
+			}
 		}
 	}// makeAccount 메서드 끝
 
@@ -375,7 +394,7 @@ public class AccountManager {
 				if(!as.isAlive()) {
 					
 					System.out.println("자동저장을 진행합니다.");
-					as = new AutoSaver(set);
+					as = new AutoSaver();
 					as.setDaemon(true);
 					as.start();
 					
@@ -396,7 +415,6 @@ public class AccountManager {
 					
 					autoS = false;
 				}
-				
 			}
 			else {
 				System.out.println("잘못 입력하였습니다.");
@@ -404,11 +422,42 @@ public class AccountManager {
 		}
 		catch (Exception e) {
 			System.out.println("오류>??");
-			as = new AutoSaver(set);
+			as = new AutoSaver();
 			as.setDaemon(true);
 			as.start();
 		}
 	}
+	
+	//파일 생성
+	public void printWriter() throws IOException {
+		
+		System.out.println("printWriter() 메서드 호출됨"); 
+        PrintWriter out = new PrintWriter(new FileWriter("src/banking6/AccountInfo.txt"));
+
+        Iterator<Account> itr = set.iterator();
+
+        while (itr.hasNext()) {
+            Account writeSave = itr.next();
+            
+            set.add(new NormalAccount("계좌", "이름", 123456, 1));
+            if (writeSave instanceof NormalAccount) {
+                out.println("[보통계좌]");
+                out.printf("계좌번호: %s  고객이름: %s  잔고: %d  기본이자(%): %.2f%n", writeSave.accountNum, writeSave.userName,
+                        writeSave.balance, ((NormalAccount) writeSave).interest);
+                
+            } else if (writeSave instanceof HighCreditAccount) {
+                out.println("[신용계좌]");
+                out.printf("계좌번호: %s  고객이름: %s  잔고: %d  기본이자: %.2f%%  신용등급: %s%n", writeSave.accountNum,
+                        writeSave.userName, writeSave.balance, ((HighCreditAccount) writeSave).interest,
+                        ((HighCreditAccount) writeSave).grade);
+            }
+
+            out.println("----------------");
+        }
+
+        out.close();
+    }
+	
 }
 
 
