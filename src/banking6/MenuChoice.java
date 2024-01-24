@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class MenuChoice implements IcustomDefine {
 
 	public void showMenu() {
-		
+
 		System.out.println("### Menu ###");
 		System.out.print("1.계좌개설      ");
 		System.out.println("2.입   금");
@@ -17,52 +17,65 @@ public class MenuChoice implements IcustomDefine {
 		System.out.println("7.프로그램 종료");
 		System.out.print("선택: ");
 	}
-	
-	public void menuChoice() {
 
+	public void menuChoice() {
 		Scanner input = new Scanner(System.in);
-		AccountManager accM = new AccountManager();
-		AutoSaverDaemon option = new AutoSaverDaemon();
-		accM.readAccountInfo();
+		AccountManager accountManager = new AccountManager();
+		accountManager.readAccountInfo();
+
+//		AutoSaver as = null;
 		
 		while (true) {
-			try {
-				showMenu();
-				int choice = input.nextInt();
 		
+				showMenu();
+				
+			try {
+				int choice = input.nextInt();
 				
 				switch (choice) {
-					case MAKE:
-						accM.makeAccount();
-						break;
-					case DEPOSIT:
-						accM.depositMoney(accM.getChoice(), accM.getAddInterest());
-						break;
-					case WITHDRAW:
-						accM.withdrawMoney();
-						break;
-					case INQUIRE:
-						accM.showAccInfo();
-						break;
-					case DELETE:
-						accM.deleteAccountInfo();
-						break;
-					case SAVE:
-						option.saveOption();
-						break;
-					case EXIT:
-						accM.readAccountInfo();
-						System.out.println("프로그램종료");
-						return;
+				case MAKE:
+					accountManager.makeAccount();
+					break;
+				case DEPOSIT:
+					accountManager.depositMoney(accountManager.getChoice(), accountManager.getAddInterest());
+					break;
+				case WITHDRAW:
+					accountManager.withdrawMoney();
+					break;
+				case INQUIRE:
+					accountManager.showAccInfo();
+					break;
+				case DELETE:
+					accountManager.deleteAccountInfo();
+					break;
+				case SAVE:
+					accountManager.saveOption();
+//					try {
+//						if(!as.isAlive()) {
+//						as = new AutoSaver();
+//						}	
+////								
+//					}							
+//					catch(Exception e) {
+////						as = new  
+//						System.out.println("여기오류");
+//					}
+					break;
+				case EXIT:
+					accountManager.saveAccountInfo();
+					System.out.println("AccountInfo.obj 파일로 저장되었습니다.");
+					System.out.println("프로그램종료");
+				return;
+				default:
 				}
 			}
 			catch (InputMismatchException e) {
+				
 				System.out.println("숫자를 입력해야합니다.");
 				input.nextLine();
+				
 			}
 		}
 	}
-	
 
-	
 }

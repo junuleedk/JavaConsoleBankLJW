@@ -6,7 +6,7 @@ import java.util.Iterator;
 class NormalAccount extends Account implements Serializable {
 
 	double interest;
-
+	
 	public NormalAccount(String accountNum, String userName, int balance, double interest) {
 		super(accountNum, userName, balance);
 		this.interest = interest;
