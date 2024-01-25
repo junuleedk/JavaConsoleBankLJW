@@ -22,7 +22,7 @@ public class MenuChoice implements IcustomDefine {
 		Scanner input = new Scanner(System.in);
 		AccountManager accountManager = new AccountManager();
 		accountManager.readAccountInfo();
-
+		//무한루프
 		while (true) {
 		
 				showMenu();
