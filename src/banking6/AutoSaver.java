@@ -11,12 +11,19 @@ import java.util.Scanner;
 
 public class AutoSaver extends Thread {
 	
-//	HashSet<Account> set = new HashSet<Account>();
+	HashSet<Account> set = new HashSet<Account>();
 	AccountManager ac = new AccountManager();
 	
+	
+
 	public AutoSaver() {
 		super();
-//		this.set = set;
+		this.set = set;
+		this.ac = ac;
+	}
+	
+	public AutoSaver(HashSet<Account> set) {
+		this.set = set;
 	}
 
 	//참고함
@@ -27,36 +34,10 @@ public class AutoSaver extends Thread {
 			
 			while(true) {
 				
-				
-				
-				
-//				PrintWriter out = new PrintWriter(new FileWriter("src/banking6/AccountInfo.txt"));
-//				out.println("adsf");
-//				Iterator<Account> itr = set.iterator();
-//			
-//				while (itr.hasNext()) {
-//					Account writeSave = itr.next();
-//					
-//					
-//					if(writeSave instanceof NormalAccount) {
-//						out.print("[보통계좌] = ");
-//						out.printf("");
-//					}
-//					else if(writeSave instanceof HighCreditAccount) {
-//						out.print("[신용계좌] = ");
-//						out.printf("");
-//					}
-//						
-//					out.printf("계좌번호: %s  ", "고객이름: %s ", "잔고: %d ", 
-//								"기본이자(%): %d ", writeSave.accountNum, writeSave.userName, 
-//									writeSave.balance);
-				
-//				}
-				
 				ac.printWriter();
+				
 				sleep(5000);
 				System.out.println("5초마다 자동저장중입니다.");
-//				out.close();
 			}	
 		}
 		catch (InterruptedException e) {

@@ -4,19 +4,28 @@ import java.io.Serializable;
 
 class HighCreditAccount extends Account implements Serializable {
 
-	double interest;
+	int interest;
 	String grade;
+	
+	public String getGrade() {
+		return grade;
+	}
 
-	public HighCreditAccount(String accountNum, String userName, int balance, double interest, String grade) {
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+
+	public HighCreditAccount(String accountNum, String userName, int balance, int interest, String grade) {
 		super(accountNum, userName, balance);
 		this.interest = interest;
 		this.grade = grade;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "계좌번호: " + accountNum + "\n" + "고객이름: " + userName + "\n" + "잔고: " + balance + "\n" + "기본이자: " + interest
-				+ "%" + "\n" + "신용등급: " + grade + "\n" + "----------------";
+		return "-----------------------------------------------------------------" + "\n" + "계좌번호: " + accountNum + "  "
+	+ "고객이름: " + userName + "  " + "잔고: " + balance + "  " + "기본이자: " + interest
+				+ "%" + "  " + "신용등급: " + grade + "\n" + "-----------------------------------------------------------------";
 	}
 
 	@Override

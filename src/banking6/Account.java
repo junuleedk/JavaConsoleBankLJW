@@ -3,6 +3,7 @@ package banking6;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -21,8 +22,8 @@ abstract public class Account implements Serializable {
 
 	@Override
 	public String toString() {
-		return "계좌번호: " + accountNum + "\n" + "고객이름: " + userName + "\n" + 
-				"잔고: " + balance + "\n" + "----------------";
+		return "------------------------------------------------------" + "\n" + "계좌번호: " + accountNum + "  " + "고객이름: " + userName + "  " + 
+				"잔고: " + balance + "\n" + "------------------------------------------------------";
 		
 	}
 	

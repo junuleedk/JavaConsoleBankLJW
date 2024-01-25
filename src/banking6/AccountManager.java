@@ -17,38 +17,46 @@ import java.util.Scanner;
 
 public class AccountManager {
 
-	// 구동, 컬렉션
+	// HasSet을 선언. Account객체 컬렉션 생성
 	HashSet<Account> set = new HashSet<Account>();
+	// 추가 이자 변수
+	int addInterest;
 	
-	int choice;
-	double addInterest;
-
-	public double getAddInterest() {
+	//추가이자값을 가져오고 설정하는 게터세터 메서드
+	public int getAddInterest() {
 		return addInterest;
 	}
-
-	public void setAddInterest(double addInterest) {
+	
+	public void setAddInterest(int addInterest) {
 		this.addInterest = addInterest;
 	}
-
-	public int getChoice() {
-		return choice;
+	
+	//생성자 초기화
+	public AccountManager() {
+		super();
+		this.set = set;
 	}
 
-	public void setChoice(int choice) {
-		this.choice = choice;
-	}
-
-	// 계좌개설
+	// 계좌개설과 중복계정처리
 	public void makeAccount() {
-
+		
 		Scanner input = new Scanner(System.in);
 
 		System.out.println("***신규계좌개설***");
 		System.out.println("1.보통계좌");
 		System.out.println("2.신용신뢰계좌");
-		System.out.print("선택: ");
-		choice = input.nextInt();
+		int choice;
+		while(true) {
+			
+			System.out.print("선택: ");
+			choice = input.nextInt();
+			if(!(choice == 1 || choice ==2)) {
+				System.out.println("1 or 2만 선택하실 수 있습니다.");
+			}
+			else {
+				break;
+			}
+		}
 
 		input.nextLine();
 		System.out.print("계좌번호: ");
@@ -59,131 +67,179 @@ public class AccountManager {
 		int ibalance = input.nextInt();
 		input.nextLine();
 		System.out.print("기본이자%(정수형태로입력):");
-		double iinterest = input.nextDouble();
+		int iinterest = input.nextInt();
 		
-		NormalAccount newAcc1 = new NormalAccount(iaccountNum, iuserName, ibalance, iinterest);
-		
-		if (choice == 1) {
-
-			if (set.contains(newAcc1)) { 
+		try {
+			//보통계좌
+			if(choice == 1) {
+				NormalAccount newAcc1 = new NormalAccount(iaccountNum, iuserName, ibalance, iinterest);
 				
-				System.out.print("중복계좌를 발견하였습니다. 덮어쓸까요? ( y / n): ");
-				char choiceYesNo = input.next().charAt(0);
-				
-				if (choiceYesNo == 'y' || choiceYesNo == 'Y') {
+				if(set.contains(newAcc1)) {
 					
-					set.remove(newAcc1);
+					input.nextLine();
+					System.out.print("중복계좌가 발견되었습니다. 덮어쓸까요? (Yes: y, No: n)");
+					
+					char choiceYesNo = input.next().charAt(0);
+					
+					if (choiceYesNo == 'y' || choiceYesNo == 'Y') {
+						
+						set.remove(newAcc1);
+						set.add(newAcc1);
+						System.out.println("성공적으로 계좌가 덮어쓰어졌습니다.");
+						
+					}
+					//유지하기
+					else if (choiceYesNo == 'n' || choiceYesNo == 'N') {
+						set.add(newAcc1);
+						System.out.println("기존 계좌를 유지합니다.");
+					}
+					//어느 것도 해당 안될때
+					else {
+						System.out.println("y(Y) 또는 n(N)만 선택하실 수 있습니다.");
+					}
+					
+				}
+				else {
 					set.add(newAcc1);
-					System.out.println("성공적으로 계좌가 덮어쓰어졌습니다.");
+					System.out.println("계좌개설이 완료되었습니다.");
 				}
 			}
-			else {
-				set.add(newAcc1);
-			}
-			
-		} 
-		else if (choice == 2) {
-			
-			input.nextLine();
-			System.out.print("신용등급(A,B,C등급): ");
-			String igrade = input.nextLine();
-			
-			HighCreditAccount newAcc2 = new HighCreditAccount
-					(iaccountNum, iuserName, ibalance, iinterest, igrade);
-			set.add(newAcc2);
-
-			if (igrade.equals("A") || igrade.equals("a")) {
-				addInterest = 7;
-			} else if (igrade.equals("B") || igrade.equals("b")) {
-				addInterest = 4;
-			} else if (igrade.equals("C") || igrade.equals("c")) {
-				addInterest = 2;
-			} else {
-				addInterest = 0;
-			}
-			
-			System.out.println("계좌개설이 완료되었습니다.");
-			
-			if (set.contains(newAcc2)) { 
+			//신용계좌
+			else if(choice == 2) {
+				//추가로 등급을 받아서 추가 이자계산에 필요한 값을 정함.
+				input.nextLine();
+				System.out.print("신용등급(A,B,C등급): ");
+				String igrade = input.nextLine();
 				
-				System.out.print("중복계좌를 발견하였습니다. 덮어쓸까요? ( y / n): ");
-				char choiceYesNo = input.next().charAt(0);
+				if (igrade.equals("A")) {
+					addInterest = 7;
+				} else if (igrade.equals("B")) {
+					addInterest = 4;
+				} else if (igrade.equals("C")) {
+					addInterest = 2;
+				} else {
+					addInterest = 0;
+				}
 				
-				if (choiceYesNo == 'y' || choiceYesNo == 'Y') {
+				HighCreditAccount newAcc2 = new HighCreditAccount
+						(iaccountNum, iuserName, ibalance, iinterest, igrade);
+				
+				if(set.contains(newAcc2)) {
 					
-					set.remove(newAcc2);
+					System.out.print("중복계좌가 발견되었습니다. 덮어쓸까요? (Yes: y, No: n)");
+					char choiceYesNo = input.next().charAt(0);
+					
+					if (choiceYesNo == 'y' || choiceYesNo == 'Y') {
+						
+						set.remove(newAcc2);
+						set.add(newAcc2);
+						System.out.println("성공적으로 계좌가 덮어쓰어졌습니다.");
+					}
+					else if (choiceYesNo == 'n' || choiceYesNo == 'N'){
+						set.add(newAcc2);
+						System.out.println("기존 계좌를 유지합니다.");
+					}
+					else {
+						System.out.println("y(Y) 또는 n(N)만 선택하실 수 있습니다.");
+					}
+				}
+				else {
 					set.add(newAcc2);
-					System.out.println("성공적으로 계좌가 덮어쓰어졌습니다.");
+					System.out.println("계좌계설이 완료되었습니다.");
 				}
 			}
 			else {
-				set.add(newAcc2);
+				System.out.println("계좌종류가 다르며 1과 2만 선택하실 수 있습니다.");
 			}
+		}
+		catch(Exception e) {
+			System.out.println("계좌종류가 다릅니다.");
 		}
 	}// makeAccount 메서드 끝
 
 	// 입금 및 이자 계산
-	public void depositMoney(int choiceNum, double addInterest) {
-
+	//addIntest라는 정수 매개변수를 받는 매서드를 만듬
+	public void depositMoney(int addInterest) {
+		
+		//사용자로부터 입력받기
 		Scanner input = new Scanner(System.in);
 		System.out.println("계좌번호와 입금할 금액을 입력하세요.");
 		System.out.println("입금시[500원단위] ");
 		System.out.print("계좌번호: ");
 		String searchAcc = input.nextLine();
 		
-		boolean isFind = false;
-
 		while (true) {
-
+			
 			System.out.print("입금액: ");
 			int depositM = input.nextInt();
+			
+			//특판계좌를 위한 변수명
+			//입금을 몇번했는지 카운터
+//			int depositCount = 0;
+			//추가금액지급 500원으로 설정
+//			int giftMoney = 0;
 			
 			// 입금 음수, 문자 예외처리 if문
 			if (depositM > 0 && depositM % 500 == 0) {
 				Iterator<Account> itr = set.iterator();
-
 				while (itr.hasNext()) {
 					Account saveAccount = itr.next();
-
-					if (saveAccount.accountNum.equals(searchAcc)) {
-						// 보통계좌
-						if (choiceNum == 1) {
-
-							double baseInterest = ((NormalAccount) saveAccount).interest;
-							double result = saveAccount.balance + ((saveAccount.balance * baseInterest) / 100)
-									+ depositM;
-
-							saveAccount.balance = (int) Math.round(result);
-
-							itr.remove();
-
-							set.add(saveAccount);
-
-							System.out.println("입금이 완료되었습니다.");
-							isFind = true;
-							break;
-						}
-						// 신용계좌
-						else if (choiceNum == 2) {
-
-							double baseInterest = ((HighCreditAccount) saveAccount).interest;
-							double result = saveAccount.balance + ((saveAccount.balance * baseInterest) / 100)
-									+ ((saveAccount.balance * (addInterest)) / 100) + depositM;
-
-							saveAccount.balance = (int) Math.round(result);
-
-							itr.remove();
-
-							set.add(saveAccount);
-
-							System.out.println("입금이 완료되었습니다.");
-							isFind = true;
-							break;
-						}
-					}
 					
-					if (!isFind) {
-						System.out.println("계좌를 찾지 못했습니다.");
+					if (saveAccount.accountNum.equals(searchAcc)) {
+						
+						int choiceNum;
+						
+				        if (saveAccount instanceof NormalAccount) {
+				        	//보통계좌
+				            choiceNum = 1;  
+				        } else if (saveAccount instanceof HighCreditAccount) {
+				            //신용계좌
+				        	choiceNum = 2; 
+				        } else {
+				            choiceNum = 0;  
+				        }
+						
+						//보통계좌이자계산식
+						if (choiceNum == 1) {
+							
+							//특판계좌이며 카운트 증가시켜 횟수올림
+//							depositCount++;
+
+							int baseInterest = ((NormalAccount) saveAccount).interest;
+							int result = saveAccount.balance + ((saveAccount.balance * baseInterest) / 100)
+									+ depositM;
+							
+							//특판계좌 계산식(입금 1회차, 2회차를 확인하는 조건문)
+							//즉, 짝수이면을 확인하기 위한 조건문
+//							if(depositCount % 2 == 0) {
+//								result = saveAccount.balance + ((saveAccount.balance * baseInterest) / 100)
+//										+ depositM;
+//								//500원 추가
+//								result += 500;
+//							}
+
+							saveAccount.balance = (int) Math.round(result);
+							
+							itr.remove();
+							set.add(saveAccount);
+							System.out.println("입금이 완료되었습니다.");
+							
+							break;
+						}
+						// 신용계좌 이자계산식
+						else if (choiceNum == 2) {
+							
+							int baseInterest = ((HighCreditAccount) saveAccount).interest;
+							int result = saveAccount.balance + ((saveAccount.balance * baseInterest) / 100)
+									+ ((saveAccount.balance * addInterest) / 100) + depositM;
+							
+							saveAccount.balance = (int) Math.round(result);
+
+							itr.remove();
+							set.add(saveAccount);
+							System.out.println("입금이 완료되었습니다.");
+							break;
+						}
 					}
 				}
 
@@ -194,7 +250,8 @@ public class AccountManager {
 			}
 		}
 	}// depositMoney 메서드 끝
-
+	
+	//출금
 	// 출금
 	public void withdrawMoney() {
 		boolean isFind = false;
@@ -218,6 +275,7 @@ public class AccountManager {
 							saveAccount.balance -= withdrawM;
 							System.out.println("출금이 완료되었습니다.");
 							set.add(saveAccount);
+							break;
 						} 
 						else {
 							
@@ -242,8 +300,6 @@ public class AccountManager {
 							else {
 								System.out.println("번호를 잘못 입력하였습니다.");
 							}
-							
-							
 							
 //							switch (choiceYesNo) {
 //							
@@ -275,6 +331,8 @@ public class AccountManager {
 			}
 		}
 	}// withdrawMoney 끝
+	
+	//계좌정보 출력
 
 	// 전체계좌정보출력
 	public void showAccInfo() {
@@ -284,6 +342,8 @@ public class AccountManager {
 		}
 		System.out.println("전체계좌정보 출력이 완료되었습니다.");
 	}
+	
+	//계정정보 삭제
 	
 	// 계좌정보삭제
 	public void deleteAccountInfo() {
@@ -307,7 +367,9 @@ public class AccountManager {
 		if(!isFind) {
 			System.out.println("계좌를 찾지 못했습니다.");
 		}
-	}
+	}//deleteAccountInfo 끝
+	
+	//IO 직렬화 - 저장
 
 	// IO 직렬화
 	public void saveAccountInfo() {
@@ -334,7 +396,9 @@ public class AccountManager {
 			e.printStackTrace();
 			
 		}
-	}
+	}//saveAccountInfo 끝
+	
+	//IO 직렬화 - 복원
 
 	public void readAccountInfo() {
 		ObjectInputStream in = null;
@@ -376,7 +440,6 @@ public class AccountManager {
 	
 	// 자동저장중 옵션
 	AutoSaver as = null;
-	
 	public void saveOption() {
 		
 		Scanner input = new Scanner(System.in);
@@ -394,7 +457,7 @@ public class AccountManager {
 				if(!as.isAlive()) {
 					
 					System.out.println("자동저장을 진행합니다.");
-					as = new AutoSaver();
+					as = new AutoSaver(set);
 					as.setDaemon(true);
 					as.start();
 					
@@ -420,42 +483,53 @@ public class AccountManager {
 				System.out.println("잘못 입력하였습니다.");
 			}
 		}
-		catch (Exception e) {
-			System.out.println("오류>??");
+		catch (NullPointerException e) {
+			System.out.println("예외처리발생");
 			as = new AutoSaver();
 			as.setDaemon(true);
 			as.start();
 		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
+	// txt파일 생성 
+	
 	//파일 생성
-	public void printWriter() throws IOException {
+	public void printWriter() {
 		
-		System.out.println("printWriter() 메서드 호출됨"); 
-        PrintWriter out = new PrintWriter(new FileWriter("src/banking6/AccountInfo.txt"));
-
-        Iterator<Account> itr = set.iterator();
-
-        while (itr.hasNext()) {
-            Account writeSave = itr.next();
-            
-            set.add(new NormalAccount("계좌", "이름", 123456, 1));
-            if (writeSave instanceof NormalAccount) {
-                out.println("[보통계좌]");
-                out.printf("계좌번호: %s  고객이름: %s  잔고: %d  기본이자(%): %.2f%n", writeSave.accountNum, writeSave.userName,
-                        writeSave.balance, ((NormalAccount) writeSave).interest);
-                
-            } else if (writeSave instanceof HighCreditAccount) {
-                out.println("[신용계좌]");
-                out.printf("계좌번호: %s  고객이름: %s  잔고: %d  기본이자: %.2f%%  신용등급: %s%n", writeSave.accountNum,
-                        writeSave.userName, writeSave.balance, ((HighCreditAccount) writeSave).interest,
-                        ((HighCreditAccount) writeSave).grade);
-            }
-
-            out.println("----------------");
-        }
-
-        out.close();
+	
+			System.out.println("AccountInfo.txt 파일이 저장되었습니다."); 
+			
+		try {	
+			
+			PrintWriter out = new PrintWriter(new FileWriter("src/banking6/AccountInfo.txt"));
+			
+			Iterator<Account> itr = set.iterator();
+			
+			while (itr.hasNext()) {
+				Account writeSave = itr.next();
+				
+				if (writeSave instanceof NormalAccount) {
+					out.println("[보통계좌]");
+					out.printf("계좌번호: %s  고객이름: %s  잔고: %d  기본이자: ", writeSave.accountNum, writeSave.userName,
+							writeSave.balance, ((NormalAccount) writeSave).interest);
+					out.println();
+					
+				} else if (writeSave instanceof HighCreditAccount) {
+					out.println("[신용계좌]");
+					out.printf("계좌번호: %s  고객이름: %s  잔고: %d  기본이자:  신용등급: %s", writeSave.accountNum,
+							writeSave.userName, writeSave.balance, ((HighCreditAccount) writeSave).interest,
+							((HighCreditAccount) writeSave).grade);
+				}
+			}
+			out.close();
+		}
+		catch(Exception e) {
+			System.out.println("예외발생함");
+			e.printStackTrace();
+		}
     }
 	
 }
@@ -463,7 +537,7 @@ public class AccountManager {
 
 
 
-//참고용
+//참고용 List사용시
 //// 중복계좌(검색용) 확인
 //public boolean iAccountDuplicate(String dAccount) {
 //	for (Account saveAccount : set) {

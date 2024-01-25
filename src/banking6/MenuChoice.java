@@ -23,8 +23,6 @@ public class MenuChoice implements IcustomDefine {
 		AccountManager accountManager = new AccountManager();
 		accountManager.readAccountInfo();
 
-//		AutoSaver as = null;
-		
 		while (true) {
 		
 				showMenu();
@@ -37,7 +35,7 @@ public class MenuChoice implements IcustomDefine {
 					accountManager.makeAccount();
 					break;
 				case DEPOSIT:
-					accountManager.depositMoney(accountManager.getChoice(), accountManager.getAddInterest());
+					accountManager.depositMoney(accountManager.addInterest);
 					break;
 				case WITHDRAW:
 					accountManager.withdrawMoney();
@@ -46,20 +44,11 @@ public class MenuChoice implements IcustomDefine {
 					accountManager.showAccInfo();
 					break;
 				case DELETE:
+//					accountManager.printWriter();
 					accountManager.deleteAccountInfo();
 					break;
 				case SAVE:
 					accountManager.saveOption();
-//					try {
-//						if(!as.isAlive()) {
-//						as = new AutoSaver();
-//						}	
-////								
-//					}							
-//					catch(Exception e) {
-////						as = new  
-//						System.out.println("여기오류");
-//					}
 					break;
 				case EXIT:
 					accountManager.saveAccountInfo();
