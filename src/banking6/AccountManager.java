@@ -74,7 +74,7 @@ public class AccountManager {
 			if(choice == 1) {
 				NormalAccount newAcc1 = new NormalAccount(iaccountNum, iuserName, ibalance, iinterest);
 				
-				if(set.contains(newAcc1)) {
+				if(set.contains(newAcc1.accountNum)) {
 					
 					input.nextLine();
 					System.out.print("중복계좌가 발견되었습니다. 덮어쓸까요? (Yes: y, No: n)");
@@ -124,7 +124,7 @@ public class AccountManager {
 				HighCreditAccount newAcc2 = new HighCreditAccount
 						(iaccountNum, iuserName, ibalance, iinterest, igrade);
 				
-				if(set.contains(newAcc2)) {
+				if(set.contains(newAcc2.accountNum)) {
 					
 					System.out.print("중복계좌가 발견되었습니다. 덮어쓸까요? (Yes: y, No: n)");
 					char choiceYesNo = input.next().charAt(0);
