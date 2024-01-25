@@ -37,7 +37,7 @@ public class AccountManager {
 		this.set = set;
 	}
 
-	// 계좌개설과 중복계정처리
+	// 계좌개설과 중복계정처리..
 	public void makeAccount() {
 		
 		Scanner input = new Scanner(System.in);
